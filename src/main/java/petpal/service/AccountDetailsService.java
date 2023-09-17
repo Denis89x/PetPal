@@ -21,13 +21,14 @@ public class AccountDetailsService implements UserDetailsService {
         this.accountRepository = accountRepository;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Account> account = accountRepository.findByUsername(username);
 
-        if (account.isEmpty())
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Optional<Account> person = accountRepository.findByUsername(s);
+
+        if (person.isEmpty())
             throw new UsernameNotFoundException("User not found");
 
-        return new AccountDetails(account.get());
+        return new AccountDetails(person.get());
     }
 }

@@ -18,6 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 **/application.properties
+**/What-i-did
 
 ### IntelliJ IDEA ###
 .idea

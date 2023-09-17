@@ -19,13 +19,13 @@ public class AccountValidator implements Validator {
     }
 
     @Override
-    public boolean supports(Class<?> clazz) {
-        return Account.class.equals(clazz);
+    public boolean supports(Class<?> aClass) {
+        return Account.class.equals(aClass);
     }
 
     @Override
-    public void validate(Object target, Errors errors) {
-        Account person = (Account) target;
+    public void validate(Object o, Errors errors) {
+        Account person = (Account) o;
 
         try {
             accountDetailsService.loadUserByUsername(person.getUsername());

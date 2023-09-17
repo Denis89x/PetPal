@@ -32,7 +32,7 @@ public class AccountDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -50,6 +50,7 @@ public class AccountDetails implements UserDetails {
         return true;
     }
 
+    // Нужно, чтобы получать данные аутентифицированного пользователя
     public Account getAccount() {
         return this.account;
     }

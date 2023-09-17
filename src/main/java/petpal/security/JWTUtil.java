@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
@@ -29,13 +30,18 @@ public class JWTUtil {
                 .sign(Algorithm.HMAC256(secret));
     }
 
-    public String validateAndRetrieveClaim(String token) throws JWTVerificationException {
+    public String validateTokenAndRetrieveClaim(String token) {
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret))
                 .withSubject("User details")
                 .withIssuer("petpal")
                 .build();
 
-        DecodedJWT jwt = jwtVerifier.verify(token);
-        return jwt.getClaim("username").asString();
+        try {
+            DecodedJWT jwt = jwtVerifier.verify(token);
+            return jwt.getClaim("username").asString();
+        } catch (JWTVerificationException exception) {
+            throw new AccessDeniedException("Incorrect JWT Token");
+        }
     }
+
 }

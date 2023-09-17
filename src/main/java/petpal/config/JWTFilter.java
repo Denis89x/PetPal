@@ -1,7 +1,6 @@
 package petpal.config;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,43 +19,46 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-    private final AccountDetailsService accountDetailsService;
+    private final AccountDetailsService personDetailsService;
 
-    @Autowired
-    public JWTFilter(JWTUtil jwtUtil, AccountDetailsService accountDetailsService) {
+    public JWTFilter(JWTUtil jwtUtil, AccountDetailsService personDetailsService) {
         this.jwtUtil = jwtUtil;
-        this.accountDetailsService = accountDetailsService;
+        this.personDetailsService = personDetailsService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = httpServletRequest.getHeader("Authorization");
 
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
 
-            if (jwt.isBlank())
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer header");
-            else {
+            if (jwt.isBlank()) {
+                httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid JWT Token in Bearer Header");
+            } else {
                 try {
-                    String username = jwtUtil.validateAndRetrieveClaim(jwt);
-                    UserDetails accountDetails = accountDetailsService.loadUserByUsername(username);
+                    System.out.println("0.1");
+                    String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+                    System.out.println("3");
+                    UserDetails userDetails = personDetailsService.loadUserByUsername(username);
+                    System.out.println("4");
 
                     UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(accountDetails,
-                                    accountDetails.getPassword(),
-                                    accountDetails.getAuthorities());
+                            new UsernamePasswordAuthenticationToken(userDetails,
+                                    userDetails.getPassword(),
+                                    userDetails.getAuthorities());
 
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
-                } catch (JWTVerificationException exception) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                } catch (JWTVerificationException exc) {
+                    httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,
                             "Invalid JWT Token");
                 }
             }
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class PetDTO {
     private String name;
-    private Integer accountId;
     private String breed;
     private Integer age;
     private String photoUrl;

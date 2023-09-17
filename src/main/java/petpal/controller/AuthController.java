@@ -6,10 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import petpal.dto.AccountDTO;
 import petpal.dto.AuthenticationDTO;
 import petpal.model.Account;
@@ -57,16 +54,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public Map<String, String> performLogin(@RequestBody AuthenticationDTO authenticationDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken =
+        System.out.println("auth: " + authenticationDTO.getUsername() + " " + authenticationDTO.getPassword());
+        UsernamePasswordAuthenticationToken authInputToken =
                 new UsernamePasswordAuthenticationToken(authenticationDTO.getUsername(),
                         authenticationDTO.getPassword());
-
+        System.out.println("2: " + authInputToken);
         try {
-            authenticationManager.authenticate(authenticationToken);
-        } catch (BadCredentialsException exception) {
-            return Map.of("message","Incorrect credentials!");
+            authenticationManager.authenticate(authInputToken);
+            System.out.println("3");
+        } catch (BadCredentialsException e) {
+            return Map.of("message", "Incorrect credentials!");
         }
-
+        System.out.println("4");
         String token = jwtUtil.generateToken(authenticationDTO.getUsername());
         return Map.of("jwt-token", token);
     }
