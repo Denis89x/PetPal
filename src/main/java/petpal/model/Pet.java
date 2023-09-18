@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "pet")
 @Getter
@@ -32,4 +35,7 @@ public class Pet {
 
     @Column(name = "photo_url")
     private String photoUrl;
+
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<Photos> photos = new ArrayList<>();
 }
