@@ -4,3 +4,7 @@ spring.datasource.username=
 spring.datasource.password=
 
 jwt_secret=
+
+application.key.id=
+application.key=
+bucket.id=
