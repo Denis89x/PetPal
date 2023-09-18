@@ -23,6 +23,10 @@ public class PetServiceImp implements PetService {
         this.petRepository = petRepository;
     }
 
+    public Optional<Pet> findById(Integer id) {
+        return petRepository.findById(id);
+    }
+
     public void createProfile(PetDTO petDTO, Integer accountId) throws AccountNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
 

@@ -7,6 +7,7 @@ import com.backblaze.b2.client.contentSources.B2FileContentSource;
 import com.backblaze.b2.client.exceptions.B2Exception;
 import com.backblaze.b2.client.structures.B2FileVersion;
 import com.backblaze.b2.client.structures.B2UploadFileRequest;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,30 +33,28 @@ public class LinkServiceImp implements LinkService {
     @Override
     public String uploadProfilePicture(MultipartFile file) throws B2Exception {
         B2StorageClient client = b2StorageService.getClient();
-
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-
         try {
             String fileName = UUID.randomUUID().toString() + extension;
-
             File tempFile = File.createTempFile("temp-", null);
             file.transferTo(tempFile);
-
             B2ContentSource source = B2FileContentSource.build(tempFile);
-
             B2UploadFileRequest request = B2UploadFileRequest.
                     builder(bucketId, fileName, B2ContentTypes.B2_AUTO, source)
                     .setCustomField("color", "green")
                     .build();
 
+            //System.out.println("Request: " + request.getFileName() + " " + request.getBucketId() + " " + request.getFileInfo() + " " + request.getContentType());
             B2FileVersion fileVersion = client.uploadSmallFile(request);
-
             tempFile.delete();
 
             return "https://f005.backblazeb2.com/file/petpal/" + fileVersion.getFileName();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
+
+
 }

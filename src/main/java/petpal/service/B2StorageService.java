@@ -27,7 +27,7 @@ public class B2StorageService {
         try {
             client = B2StorageClientFactory
                     .createDefaultFactory()
-                    .create(applicationKeyId, applicationKey, "PetPal/1.0");
+                    .create(applicationKeyId, applicationKey, "petpal/1.0");
         } catch (Exception e) {
             System.out.println("Failed to initialize B2StorageService: " + e.getMessage());
             e.printStackTrace();
