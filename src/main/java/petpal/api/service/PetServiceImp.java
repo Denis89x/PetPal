@@ -10,6 +10,7 @@ import petpal.store.repository.PetRepository;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class PetServiceImp implements PetService {
@@ -57,6 +58,11 @@ public class PetServiceImp implements PetService {
         optionalAge.ifPresent(pet::setAge);
 
         save(pet);
+    }
+
+    @Override
+    public Stream<Pet> streamAllBy() {
+        return petRepository.streamAllBy();
     }
 
     @Override

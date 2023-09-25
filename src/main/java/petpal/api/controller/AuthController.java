@@ -59,11 +59,9 @@ public class AuthController {
                         authenticationDTO.getPassword());
         try {
             authenticationManager.authenticate(authInputToken);
-            System.out.println("3");
         } catch (BadCredentialsException e) {
             return Map.of("message", "Incorrect credentials!");
         }
-        System.out.println("4");
         String token = jwtUtil.generateToken(authenticationDTO.getUsername());
         return Map.of("jwt-token", token);
     }

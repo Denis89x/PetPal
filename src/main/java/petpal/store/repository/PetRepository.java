@@ -4,7 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import petpal.store.model.Pet;
 
+import java.util.stream.Stream;
+
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Integer> {
 
+    Stream<Pet> streamAllBy();
 }

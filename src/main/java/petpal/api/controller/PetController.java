@@ -5,26 +5,26 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import petpal.api.dto.AccountDTO;
 import petpal.api.dto.PetDTO;
 import petpal.security.AccountDetails;
 import petpal.api.service.LinkServiceImp;
 import petpal.api.service.PetServiceImp;
 import petpal.api.service.PhotosServiceImp;
-import petpal.store.model.Account;
 import petpal.store.model.Pet;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api")
@@ -35,11 +35,24 @@ public class PetController {
     PetServiceImp petServiceImp;
     LinkServiceImp linkServiceImp;
     PhotosServiceImp photosServiceImp;
+    ModelMapper modelMapper;
 
+    // CRUD
+    private static final String FETCH_PROFILE = "/pets";
     private static final String CREATE_PROFILE = "/pet/create";
     private static final String EDIT_PROFILE = "/pet/edit";
 
     private static final String UPLOAD_PICTURE = "/pet/upload-picture";
+
+    @Transactional(readOnly = true)
+    @GetMapping(FETCH_PROFILE)
+    public List<PetDTO> fetchPets() {
+        Stream<Pet> petStream = petServiceImp.streamAllBy();
+
+        return petStream
+                .map(this::convertToPetDto)
+                .toList();
+    }
 
     @PostMapping(CREATE_PROFILE)
     public ResponseEntity<PetDTO> createProfile(@RequestBody @Valid PetDTO petDTO) throws AccountNotFoundException {
@@ -95,5 +108,9 @@ public class PetController {
         } catch (B2Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload profile picture.");
         }
+    }
+
+    public PetDTO convertToPetDto(Pet pet) {
+        return this.modelMapper.map(pet, PetDTO.class);
     }
 }

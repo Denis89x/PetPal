@@ -5,6 +5,7 @@ import petpal.store.model.Pet;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface PetService {
     void createProfile(PetDTO petDTO, Integer accountId) throws AccountNotFoundException;
@@ -13,4 +14,5 @@ public interface PetService {
 
     void update(Optional<Pet> optionalPet, Optional<String> optionalName, Optional<String> optionalBreed, Optional<Integer> optionalAge);
 
+    Stream<Pet> streamAllBy();
 }
