@@ -1,4 +1,4 @@
-package petpal.model;
+package petpal.store.model;
 
 import javax.persistence.*;
 import lombok.Getter;

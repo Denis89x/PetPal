@@ -1,7 +1,6 @@
-package petpal.service;
-
-import petpal.model.Pet;
-import petpal.model.Photos;
+package petpal.api.service;
+import petpal.store.model.Pet;
+import petpal.store.model.Photos;
 
 import java.util.Optional;
 

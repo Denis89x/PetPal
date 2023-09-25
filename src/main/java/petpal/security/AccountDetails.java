@@ -3,17 +3,12 @@ package petpal.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import petpal.model.Account;
+import petpal.store.model.Account;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class AccountDetails implements UserDetails {
-    private final Account account;
-
-    public AccountDetails(Account account) {
-        this.account = account;
-    }
+public record AccountDetails(Account account) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -48,10 +43,5 @@ public class AccountDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    // Нужно, чтобы получать данные аутентифицированного пользователя
-    public Account getAccount() {
-        return this.account;
     }
 }

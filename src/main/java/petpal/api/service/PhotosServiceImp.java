@@ -1,10 +1,10 @@
-package petpal.service;
+package petpal.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import petpal.model.Pet;
-import petpal.model.Photos;
-import petpal.repository.PhotoRepository;
+import petpal.store.model.Pet;
+import petpal.store.model.Photos;
+import petpal.store.repository.PhotoRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

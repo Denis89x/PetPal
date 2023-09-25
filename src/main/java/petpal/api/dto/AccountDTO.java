@@ -1,4 +1,4 @@
-package petpal.dto;
+package petpal.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;

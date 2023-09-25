@@ -1,5 +1,4 @@
-package petpal.service;
+package petpal.api.service;
 
 public interface AccountService {
-
 }

@@ -1,4 +1,4 @@
-package petpal.model;
+package petpal.store.model;
 
 import lombok.Getter;
 import lombok.Setter;

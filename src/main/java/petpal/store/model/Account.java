@@ -1,4 +1,4 @@
-package petpal.model;
+package petpal.store.model;
 
 import javax.persistence.*;
 import lombok.Getter;
@@ -33,8 +33,10 @@ public class Account {
     private String role;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Pet> pets = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Post> posts = new ArrayList<>();
 }

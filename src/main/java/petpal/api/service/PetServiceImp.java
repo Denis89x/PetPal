@@ -1,12 +1,12 @@
-package petpal.service;
+package petpal.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import petpal.dto.PetDTO;
-import petpal.model.Account;
-import petpal.model.Pet;
-import petpal.repository.AccountRepository;
-import petpal.repository.PetRepository;
+import petpal.api.dto.PetDTO;
+import petpal.store.model.Account;
+import petpal.store.model.Pet;
+import petpal.store.repository.AccountRepository;
+import petpal.store.repository.PetRepository;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Optional;

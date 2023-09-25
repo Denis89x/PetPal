@@ -1,4 +1,4 @@
-package petpal.service;
+package petpal.api.service;
 
 import com.backblaze.b2.client.B2StorageClient;
 import com.backblaze.b2.client.contentSources.B2ContentSource;
@@ -7,7 +7,6 @@ import com.backblaze.b2.client.contentSources.B2FileContentSource;
 import com.backblaze.b2.client.exceptions.B2Exception;
 import com.backblaze.b2.client.structures.B2FileVersion;
 import com.backblaze.b2.client.structures.B2UploadFileRequest;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

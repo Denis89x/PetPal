@@ -1,12 +1,14 @@
-package petpal.service;
+package petpal.api.service;
 
 import com.backblaze.b2.client.B2StorageClient;
 import com.backblaze.b2.client.B2StorageClientFactory;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@Getter
 @Component
 public class B2StorageService {
 
@@ -33,9 +35,5 @@ public class B2StorageService {
             e.printStackTrace();
             throw e;
         }
-    }
-
-    public B2StorageClient getClient() {
-        return client;
     }
 }

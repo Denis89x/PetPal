@@ -1,4 +1,4 @@
-package petpal.model;
+package petpal.store.model;
 
 import javax.persistence.*;
 import lombok.Getter;
@@ -37,5 +37,6 @@ public class Pet {
     private String photoUrl;
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Photos> photos = new ArrayList<>();
 }

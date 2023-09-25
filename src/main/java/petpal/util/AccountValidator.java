@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import petpal.model.Account;
-import petpal.service.AccountDetailsService;
+import petpal.api.service.AccountDetailsService;
+import petpal.store.model.Account;
 
 @Component
 public class AccountValidator implements Validator {

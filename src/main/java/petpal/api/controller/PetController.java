@@ -1,4 +1,4 @@
-package petpal.controller;
+package petpal.api.controller;
 
 import com.backblaze.b2.client.exceptions.B2Exception;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import petpal.dto.PetDTO;
-import petpal.model.Pet;
-import petpal.model.Photos;
+import petpal.api.dto.PetDTO;
 import petpal.security.AccountDetails;
-import petpal.service.LinkServiceImp;
-import petpal.service.PetServiceImp;
-import petpal.service.PhotosServiceImp;
+import petpal.api.service.LinkServiceImp;
+import petpal.api.service.PetServiceImp;
+import petpal.api.service.PhotosServiceImp;
+import petpal.store.model.Pet;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
@@ -46,7 +45,7 @@ public class PetController {
         if (petDTO == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        petServiceImp.createProfile(petDTO, accountDetails.getAccount().getAccountId());
+        petServiceImp.createProfile(petDTO, accountDetails.account().getAccountId());
         return new ResponseEntity<>(petDTO, headers, HttpStatus.CREATED);
     }
 

@@ -1,11 +1,11 @@
-package petpal.controller;
+package petpal.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import petpal.repository.AccountRepository;
 import petpal.security.AccountDetails;
+import petpal.store.repository.AccountRepository;
 
 @RestController
 @RequestMapping("/account")

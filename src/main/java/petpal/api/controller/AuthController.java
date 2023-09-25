@@ -1,4 +1,4 @@
-package petpal.controller;
+package petpal.api.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +7,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import petpal.dto.AccountDTO;
-import petpal.dto.AuthenticationDTO;
-import petpal.model.Account;
+import petpal.api.dto.AccountDTO;
+import petpal.api.dto.AuthenticationDTO;
 import petpal.security.JWTUtil;
-import petpal.service.RegistrationService;
+import petpal.api.service.RegistrationService;
+import petpal.store.model.Account;
 import petpal.util.AccountValidator;
 
 import javax.validation.Valid;

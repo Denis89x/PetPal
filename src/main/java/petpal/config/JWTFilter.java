@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import petpal.security.JWTUtil;
-import petpal.service.AccountDetailsService;
+import petpal.api.service.AccountDetailsService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
