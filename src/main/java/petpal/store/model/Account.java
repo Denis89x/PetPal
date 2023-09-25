@@ -1,9 +1,9 @@
 package petpal.store.model;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,30 +13,34 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
-    private Integer accountId;
+    Integer accountId;
 
     @Column(name = "username")
-    private String username;
+    String username;
 
     @Column(name = "email")
-    private String email;
+    String email;
 
     @Column(name = "password")
-    private String password;
+    String password;
 
     @Column(name = "role")
-    private String role;
+    String role;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Pet> pets = new ArrayList<>();
+    List<Pet> pets = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Post> posts = new ArrayList<>();
+    List<Post> posts = new ArrayList<>();
 }

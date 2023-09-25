@@ -27,6 +27,7 @@ public class PetServiceImp implements PetService {
         return petRepository.findById(id);
     }
 
+
     public void createProfile(PetDTO petDTO, Integer accountId) throws AccountNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
 
@@ -42,5 +43,10 @@ public class PetServiceImp implements PetService {
         } else {
             throw new AccountNotFoundException("Аккаунт не найден");
         }
+    }
+
+    @Override
+    public void save(Pet pet) {
+        petRepository.saveAndFlush(pet);
     }
 }
