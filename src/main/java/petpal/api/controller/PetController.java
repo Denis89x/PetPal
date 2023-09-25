@@ -50,7 +50,7 @@ public class PetController {
     }
 
     @PostMapping("/upload-picture")
-    public ResponseEntity<String> uploadPicture(@RequestParam("file") MultipartFile file, @RequestParam("pet_id") Integer petId) throws B2Exception {
+    public ResponseEntity<String> uploadPicture(@RequestParam("file") MultipartFile file, @RequestParam("pet_id") Integer petId) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Please select a file to upload.");
         }
@@ -64,7 +64,6 @@ public class PetController {
                 return ResponseEntity.badRequest().body("Incorrect pet_id.");
             }
         } catch (B2Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload profile picture.");
         }
     }

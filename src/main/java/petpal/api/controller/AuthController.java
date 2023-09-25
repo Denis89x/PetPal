@@ -54,11 +54,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public Map<String, String> performLogin(@RequestBody AuthenticationDTO authenticationDTO) {
-        System.out.println("auth: " + authenticationDTO.getUsername() + " " + authenticationDTO.getPassword());
         UsernamePasswordAuthenticationToken authInputToken =
                 new UsernamePasswordAuthenticationToken(authenticationDTO.getUsername(),
                         authenticationDTO.getPassword());
-        System.out.println("2: " + authInputToken);
         try {
             authenticationManager.authenticate(authInputToken);
             System.out.println("3");
