@@ -46,6 +46,20 @@ public class PetServiceImp implements PetService {
     }
 
     @Override
+    public void update(Optional<Pet> optionalPet,
+                       Optional<String> optionalName,
+                       Optional<String> optionalBreed,
+                       Optional<Integer> optionalAge) {
+        Pet pet = optionalPet.get();
+
+        optionalName.ifPresent(pet::setName);
+        optionalBreed.ifPresent(pet::setBreed);
+        optionalAge.ifPresent(pet::setAge);
+
+        save(pet);
+    }
+
+    @Override
     public void save(Pet pet) {
         petRepository.saveAndFlush(pet);
     }

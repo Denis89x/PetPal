@@ -35,7 +35,6 @@ public class PetController {
     PetServiceImp petServiceImp;
     LinkServiceImp linkServiceImp;
     PhotosServiceImp photosServiceImp;
-    ModelMapper modelMapper;
 
     private static final String CREATE_PROFILE = "/pet/create";
     private static final String EDIT_PROFILE = "/pet/edit";
@@ -68,13 +67,7 @@ public class PetController {
             Optional<Pet> optionalPet = petServiceImp.findById(petId);
 
             if (optionalPet.isPresent()) {
-                Pet pet = optionalPet.get();
-
-                optionalName.ifPresent(pet::setName);
-                optionalBreed.ifPresent(pet::setBreed);
-                optionalAge.ifPresent(pet::setAge);
-
-                petServiceImp.save(pet);
+                petServiceImp.update(optionalPet, optionalName, optionalBreed, optionalAge);
 
                 return ResponseEntity.status(HttpStatus.OK).body("Changes have been made");
             } else {
