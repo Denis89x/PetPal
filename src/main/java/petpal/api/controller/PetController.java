@@ -35,22 +35,43 @@ public class PetController {
     PetServiceImp petServiceImp;
     LinkServiceImp linkServiceImp;
     PhotosServiceImp photosServiceImp;
-    ModelMapper modelMapper;
+
 
     // CRUD
-    private static final String FETCH_PROFILE = "/pets";
+    private static final String FETCH_ALL_PROFILE = "/pets";
+    private static final String FETCH_PROFILE = "/pet/{pet_id}";
     private static final String CREATE_PROFILE = "/pet/create";
-    private static final String EDIT_PROFILE = "/pet/edit";
+    private static final String EDIT_PROFILE = "/pet/edit/{pet_id}";
 
     private static final String UPLOAD_PICTURE = "/pet/upload-picture";
 
     @Transactional(readOnly = true)
     @GetMapping(FETCH_PROFILE)
+    public ResponseEntity<PetDTO> fetchPet(@PathVariable("pet_id") Optional<Integer> optionalId) {
+        if (optionalId.isPresent()) {
+            int id = optionalId.get();
+            Optional<Pet> optionalPet = petServiceImp.findById(id);
+            System.out.println("optionalPet: " + optionalPet);
+            if (optionalPet.isPresent()) {
+                HttpHeaders headers = new HttpHeaders();
+
+                Pet pet = optionalPet.get();
+                return new ResponseEntity<>(petServiceImp.convertToPetDto(pet), headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(FETCH_ALL_PROFILE)
     public List<PetDTO> fetchPets() {
         Stream<Pet> petStream = petServiceImp.streamAllBy();
 
         return petStream
-                .map(this::convertToPetDto)
+                .map(petServiceImp::convertToPetDto)
                 .toList();
     }
 
@@ -69,8 +90,7 @@ public class PetController {
     }
 
     @PatchMapping(EDIT_PROFILE)
-    public ResponseEntity<String> editProfile(
-            @RequestParam(value = "pet_id") Optional<Integer> optionalPetId,
+    public ResponseEntity<String> editProfile(@PathVariable("pet_id") Optional<Integer> optionalPetId,
             @RequestParam(value = "name", required = false) Optional<String> optionalName,
             @RequestParam(value = "breed", required = false) Optional<String> optionalBreed,
             @RequestParam(value = "age", required = false) Optional<Integer> optionalAge) {
@@ -110,7 +130,5 @@ public class PetController {
         }
     }
 
-    public PetDTO convertToPetDto(Pet pet) {
-        return this.modelMapper.map(pet, PetDTO.class);
-    }
+
 }

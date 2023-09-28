@@ -15,4 +15,6 @@ public interface PetService {
     void update(Optional<Pet> optionalPet, Optional<String> optionalName, Optional<String> optionalBreed, Optional<Integer> optionalAge);
 
     Stream<Pet> streamAllBy();
+
+    Optional<Pet> findById(Integer id);
 }

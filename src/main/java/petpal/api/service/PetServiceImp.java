@@ -1,6 +1,9 @@
 package petpal.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import petpal.api.dto.PetDTO;
 import petpal.store.model.Account;
@@ -13,17 +16,15 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class PetServiceImp implements PetService {
 
-    private final AccountRepository accountRepository;
-    private final PetRepository petRepository;
+    AccountRepository accountRepository;
+    PetRepository petRepository;
+    ModelMapper modelMapper;
 
-    @Autowired
-    public PetServiceImp(AccountRepository accountRepository, PetRepository petRepository) {
-        this.accountRepository = accountRepository;
-        this.petRepository = petRepository;
-    }
-
+    @Override
     public Optional<Pet> findById(Integer id) {
         return petRepository.findById(id);
     }
@@ -68,5 +69,9 @@ public class PetServiceImp implements PetService {
     @Override
     public void save(Pet pet) {
         petRepository.saveAndFlush(pet);
+    }
+
+    public PetDTO convertToPetDto(Pet pet) {
+        return this.modelMapper.map(pet, PetDTO.class);
     }
 }
