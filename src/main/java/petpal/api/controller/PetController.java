@@ -42,6 +42,7 @@ public class PetController {
     private static final String FETCH_PROFILE = "/pet/{pet_id}";
     private static final String CREATE_PROFILE = "/pet/create";
     private static final String EDIT_PROFILE = "/pet/edit/{pet_id}";
+    private static final String DELETE_PROFILE = "/pet/delete/{pet_id}";
 
     private static final String UPLOAD_PICTURE = "/pet/upload-picture";
 
@@ -100,7 +101,13 @@ public class PetController {
             Optional<Pet> optionalPet = petServiceImp.findById(petId);
 
             if (optionalPet.isPresent()) {
-                petServiceImp.update(optionalPet, optionalName, optionalBreed, optionalAge);
+                Pet pet = optionalPet.get();
+
+                optionalName.ifPresent(pet::setName);
+                optionalBreed.ifPresent(pet::setBreed);
+                optionalAge.ifPresent(pet::setAge);
+
+                petServiceImp.save(pet);
 
                 return ResponseEntity.status(HttpStatus.OK).body("Changes have been made");
             } else {
@@ -108,6 +115,23 @@ public class PetController {
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id shouldn`t be empty.");
+        }
+    }
+
+    @DeleteMapping(DELETE_PROFILE)
+    public ResponseEntity<String> deleteProfile(@PathVariable("pet_id") Optional<Integer> optionalPetId) {
+        if (optionalPetId.isPresent()) {
+            int petId = optionalPetId.get();
+            Optional<Pet> optionalPet = petServiceImp.findById(petId);
+            if (optionalPet.isPresent()) {
+                petServiceImp.delete(petId);
+
+                return ResponseEntity.ok("Pet profile was successfully deleted.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A profile with that id does not exist.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("The pet_id should not be empty");
         }
     }
 
@@ -121,7 +145,7 @@ public class PetController {
             if (petOptional.isPresent()) {
                 Pet pet = petOptional.get();
                 photosServiceImp.save(pet, linkServiceImp.uploadProfilePicture(file));
-                return ResponseEntity.ok("Image was successfully uploaded");
+                return ResponseEntity.ok("Image was successfully uploaded.");
             } else {
                 return ResponseEntity.badRequest().body("Incorrect pet_id.");
             }
@@ -129,6 +153,4 @@ public class PetController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload profile picture.");
         }
     }
-
-
 }

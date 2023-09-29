@@ -29,6 +29,10 @@ public class PetServiceImp implements PetService {
         return petRepository.findById(id);
     }
 
+    @Override
+    public void delete(Integer id) {
+        petRepository.deleteById(id);
+    }
 
     public void createProfile(PetDTO petDTO, Integer accountId) throws AccountNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
@@ -45,20 +49,6 @@ public class PetServiceImp implements PetService {
         } else {
             throw new AccountNotFoundException("Аккаунт не найден");
         }
-    }
-
-    @Override
-    public void update(Optional<Pet> optionalPet,
-                       Optional<String> optionalName,
-                       Optional<String> optionalBreed,
-                       Optional<Integer> optionalAge) {
-        Pet pet = optionalPet.get();
-
-        optionalName.ifPresent(pet::setName);
-        optionalBreed.ifPresent(pet::setBreed);
-        optionalAge.ifPresent(pet::setAge);
-
-        save(pet);
     }
 
     @Override
