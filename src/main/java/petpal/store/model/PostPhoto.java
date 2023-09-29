@@ -14,12 +14,16 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostPhotos {
+public class PostPhoto {
 
     @Id
     @Column(name = "post_photo_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer postPhotoId;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @Column(name = "photo_url")
     String photoUrl;

@@ -44,7 +44,6 @@ public class LinkServiceImp implements LinkService {
                     .setCustomField("color", "green")
                     .build();
 
-            //System.out.println("Request: " + request.getFileName() + " " + request.getBucketId() + " " + request.getFileInfo() + " " + request.getContentType());
             B2FileVersion fileVersion = client.uploadSmallFile(request);
             tempFile.delete();
 

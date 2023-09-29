@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "post")
 @Getter
@@ -24,6 +27,7 @@ public class Post {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "photo_url")
-    private String photoUrl;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<PostPhoto> postPhotos = new ArrayList<>();
 }

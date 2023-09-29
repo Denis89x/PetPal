@@ -35,7 +35,6 @@ public class PetController {
     LinkServiceImp linkServiceImp;
     PhotosServiceImp photosServiceImp;
 
-
     // CRUD
     private static final String FETCH_ALL_PROFILE = "/pets";
     private static final String FETCH_PROFILE = "/pet/{pet_id}";
@@ -57,12 +56,9 @@ public class PetController {
 
                 Pet pet = optionalPet.get();
                 return new ResponseEntity<>(petServiceImp.convertToPetDto(pet), headers, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Transactional(readOnly = true)
