@@ -9,5 +9,4 @@ public class PetDTO {
     private String name;
     private String breed;
     private Integer age;
-    private String photoUrl;
 }

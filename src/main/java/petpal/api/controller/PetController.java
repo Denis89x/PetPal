@@ -72,7 +72,9 @@ public class PetController {
     }
 
     @PostMapping(CREATE_PROFILE)
-    public ResponseEntity<PetDTO> createProfile(@RequestBody @Valid PetDTO petDTO) throws AccountNotFoundException {
+    public ResponseEntity<PetDTO> createProfile(
+            @RequestBody @Valid PetDTO petDTO,
+            @RequestParam(value = "file", required = false) Optional<MultipartFile> file) throws AccountNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
 
@@ -81,7 +83,12 @@ public class PetController {
         if (petDTO == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        petServiceImp.createProfile(petDTO, accountDetails.account().getAccountId());
+        if (file.isPresent()) {
+            petServiceImp.createProfile(petDTO, accountDetails.account().getAccountId(), file);
+        } else {
+            petServiceImp.createProfile(petDTO, accountDetails.account().getAccountId(), Optional.empty());
+        }
+
         return new ResponseEntity<>(petDTO, headers, HttpStatus.CREATED);
     }
 

@@ -10,12 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import petpal.api.dto.PostDTO;
+import petpal.api.service.PostPhotoService;
 import petpal.api.service.PostService;
 import petpal.store.model.Account;
 import petpal.store.model.Post;
+import petpal.store.model.PostPhoto;
 
 import javax.security.auth.login.AccountNotFoundException;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class PostController {
 
     PostService postService;
+    PostPhotoService postPhotoService;
 
     private static final String FETCH_ALL_POST = "/posts";
     private static final String FETCH_POST = "/post/{post_id}";
@@ -72,5 +74,16 @@ public class PostController {
         }
        
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping(DELETE_POST)
+    public ResponseEntity<String> deletePost(@PathVariable("post_id") Optional<Integer> optionalPostId) {
+        return optionalPostId.flatMap(postService::findById)
+                .map(post -> {
+                    postPhotoService.findAllByPost(post).ifPresent(postPhotoService::deleteAll);
+                    postService.deleteById(post.getPostId());
+                    return ResponseEntity.ok("Post was successfully deleted.");
+                })
+                .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("The post_id should not be empty"));
     }
 }

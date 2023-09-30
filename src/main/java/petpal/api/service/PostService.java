@@ -13,6 +13,7 @@ import petpal.api.dto.PostDTO;
 import petpal.security.AccountDetails;
 import petpal.store.model.*;
 import petpal.store.repository.AccountRepository;
+import petpal.store.repository.PostPhotoRepository;
 import petpal.store.repository.PostRepository;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -78,5 +79,9 @@ public class PostService implements IPostService {
         postPhoto.setPost(post);
         postPhoto.setUploadDate(LocalDateTime.now());
         postPhotoRepository.saveAndFlush(postPhoto);
+    }
+
+    public void deleteById(Integer id) {
+        postRepository.deleteById(id);
     }
 }

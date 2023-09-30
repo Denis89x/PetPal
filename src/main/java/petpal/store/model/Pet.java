@@ -1,6 +1,10 @@
 package petpal.store.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,12 +29,17 @@ public class Pet {
     private Account account;
 
     @Column(name = "name")
+    @NotEmpty(message = "Name shouldn`t be empty")
+    @Size(min = 2,max = 16,message = "Name should be 2 - 16 symbols size")
     private String name;
 
     @Column(name = "breed")
+    @NotEmpty(message = "Breed shouldn`t be empty")
+    @Size(min = 2, max = 20, message = "Breed should be 2 - 16 symbols size")
     private String breed;
 
     @Column(name = "age")
+    @Min(value = 1, message = "Age should be more then 1")
     private Integer age;
 
     @Column(name = "photo_url")
