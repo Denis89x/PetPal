@@ -9,7 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import petpal.api.dto.PetDTO;
 import petpal.api.dto.PostDTO;
+import petpal.api.dto.PostPhotoDTO;
 import petpal.security.AccountDetails;
 import petpal.store.model.*;
 import petpal.store.repository.AccountRepository;
@@ -20,6 +22,8 @@ import javax.security.auth.login.AccountNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -38,8 +42,25 @@ public class PostService implements IPostService {
     }
 
     public PostDTO convertToPostDto(Post post) {
-        return this.modelMapper.map(post, PostDTO.class);
+        PostDTO postDto = new PostDTO();
+        postDto.setText(post.getText());
+
+        List<PostPhotoDTO> postPhotoDtos = post.getPostPhotos().stream()
+                .map(postPhoto -> {
+                    PostPhotoDTO postPhotoDto = new PostPhotoDTO();
+                    postPhotoDto.setPhotoUrl(postPhoto.getPhotoUrl());
+                    postPhotoDto.setDescription(postPhoto.getDescription());
+                    postPhotoDto.setAccountId(postPhoto.getPost().getAccount().getAccountId());
+                    postPhotoDto.setUploadDate(postPhoto.getUploadDate());
+                    return postPhotoDto;
+                })
+                .collect(Collectors.toList());
+
+        postDto.setPostPhotos(postPhotoDtos);
+
+        return postDto;
     }
+
 
     public void createPost(String text, Integer accountId, Optional<List<MultipartFile>> listOfFiles) throws AccountNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
@@ -83,5 +104,9 @@ public class PostService implements IPostService {
 
     public void deleteById(Integer id) {
         postRepository.deleteById(id);
+    }
+
+    public Stream<Post> streamAllBy() {
+        return postRepository.streamAllBy();
     }
 }

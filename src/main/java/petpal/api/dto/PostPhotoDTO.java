@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class PostPhotoDTO {
     String photoUrl;
-
     String description;
-
+    Integer accountId;
     LocalDateTime uploadDate;
 }

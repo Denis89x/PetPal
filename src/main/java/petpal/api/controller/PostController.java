@@ -14,11 +14,11 @@ import petpal.api.service.PostPhotoService;
 import petpal.api.service.PostService;
 import petpal.store.model.Account;
 import petpal.store.model.Post;
-import petpal.store.model.PostPhoto;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RestController
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -35,8 +35,6 @@ public class PostController {
     private static final String EDIT_POST = "/post/edit/{post_id}";
     private static final String DELETE_POST = "/post/delete/{post_id}";
 
-    private static final String UPLOAD_PICTURE = "/post/upload-picture";
-
     @Transactional(readOnly = true)
     @GetMapping(FETCH_POST)
     public ResponseEntity<PostDTO> fetchPost(@PathVariable("post_id") Optional<Integer> optionalPostId) {
@@ -51,6 +49,16 @@ public class PostController {
             }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(FETCH_ALL_POST)
+    public List<PostDTO> fetchAllPosts() {
+        Stream<Post> postStream = postService.streamAllBy();
+
+        return postStream
+                .map(postService::convertToPostDto)
+                .toList();
     }
 
     @PostMapping(CREATE_POST)
