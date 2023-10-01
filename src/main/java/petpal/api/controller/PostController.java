@@ -84,6 +84,25 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PatchMapping(EDIT_POST)
+    public ResponseEntity<String> editPost(
+            @PathVariable("post_id") Optional<Integer> optionalPostId,
+            @RequestParam(value = "text", required = false) Optional<String> optionalText,
+            @RequestPart(value = "files", required = false) Optional<List<MultipartFile>> optionalFiles,
+            @RequestParam(value = "deletePhotos", required = false) Optional<List<Integer>> optionalDeletePhotoIds) {
+        if (optionalPostId.isPresent()) {
+            Optional<Post> optionalPost = postService.findById(optionalPostId.get());
+            if (optionalPost.isPresent()) {
+                Post post = optionalPost.get();
+                optionalText.ifPresent(s -> postService.saveText(post, s));
+                optionalDeletePhotoIds.ifPresent(integers -> postService.deletePhotosFromPost(post.getPostId(), integers));
+                optionalFiles.ifPresent(multipartFiles -> postService.addPhotosToPost(post.getPostId(), multipartFiles));
+                return new ResponseEntity<>("Post was successfully edited.", HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("Post not found.", HttpStatus.NOT_FOUND);
+    }
+
     @DeleteMapping(DELETE_POST)
     public ResponseEntity<String> deletePost(@PathVariable("post_id") Optional<Integer> optionalPostId) {
         return optionalPostId.flatMap(postService::findById)

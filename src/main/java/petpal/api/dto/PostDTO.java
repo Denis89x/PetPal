@@ -1,10 +1,7 @@
 package petpal.api.dto;
 
 import lombok.*;
-import petpal.store.model.Photos;
-import petpal.store.model.PostPhoto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -14,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class PostDTO {
     private String text;
-    private List<PostPhotoDTO> postPhotos;
+    private List<FetchPostPhotoDTO> postPhotos;
 }

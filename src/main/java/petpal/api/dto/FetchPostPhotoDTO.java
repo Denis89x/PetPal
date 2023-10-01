@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostPhotoDTO {
+public class FetchPostPhotoDTO {
     String photoUrl;
     String description;
-    Integer postId;
+    Integer accountId;
     LocalDateTime uploadDate;
 }

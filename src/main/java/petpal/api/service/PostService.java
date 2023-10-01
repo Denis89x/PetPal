@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import petpal.api.dto.PetDTO;
 import petpal.api.dto.PostDTO;
+import petpal.api.dto.FetchPostPhotoDTO;
 import petpal.api.dto.PostPhotoDTO;
 import petpal.security.AccountDetails;
 import petpal.store.model.*;
@@ -45,9 +46,9 @@ public class PostService implements IPostService {
         PostDTO postDto = new PostDTO();
         postDto.setText(post.getText());
 
-        List<PostPhotoDTO> postPhotoDtos = post.getPostPhotos().stream()
+        List<FetchPostPhotoDTO> postPhotoDtos = post.getPostPhotos().stream()
                 .map(postPhoto -> {
-                    PostPhotoDTO postPhotoDto = new PostPhotoDTO();
+                    FetchPostPhotoDTO postPhotoDto = new FetchPostPhotoDTO();
                     postPhotoDto.setPhotoUrl(postPhoto.getPhotoUrl());
                     postPhotoDto.setDescription(postPhoto.getDescription());
                     postPhotoDto.setAccountId(postPhoto.getPost().getAccount().getAccountId());
@@ -88,6 +89,39 @@ public class PostService implements IPostService {
         }
     }
 
+    public void addPhotosToPost(Integer postId, List<MultipartFile> files) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isPresent()) {
+            for (MultipartFile file : files) {
+                PostPhotoDTO postPhotoDTO = new PostPhotoDTO();
+                try {
+                    postPhotoDTO.setPhotoUrl(linkServiceImp.uploadProfilePicture(file));
+                } catch (B2Exception e) {
+                    throw new RuntimeException(e);
+                }
+                postPhotoDTO.setUploadDate(LocalDateTime.now());
+                postPhotoDTO.setPostId(optionalPost.get().getPostId());
+                postPhotoRepository.saveAndFlush(convertToPostPhoto(postPhotoDTO));
+            }
+        }
+    }
+
+    public void deletePhotosFromPost(Integer postId, List<Integer> idList) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isPresent()) {
+            for (Integer id : idList) {
+                if (postPhotoRepository.findById(id).isPresent()) {
+                    postPhotoRepository.deleteById(id);
+                }
+            }
+        }
+    }
+
+    public void saveText(Post post, String text) {
+        post.setText(text);
+        postRepository.saveAndFlush(post);
+    }
+
     public Account getAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
@@ -108,5 +142,13 @@ public class PostService implements IPostService {
 
     public Stream<Post> streamAllBy() {
         return postRepository.streamAllBy();
+    }
+
+    public PostPhotoDTO convertToPostPhotoDTO(PostPhoto postPhoto) {
+        return this.modelMapper.map(postPhoto, PostPhotoDTO.class);
+    }
+
+    public PostPhoto convertToPostPhoto(PostPhotoDTO postPhotoDTO) {
+        return this.modelMapper.map(postPhotoDTO, PostPhoto.class);
     }
 }
