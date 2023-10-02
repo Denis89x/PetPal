@@ -42,6 +42,7 @@ public class PostService implements IPostService {
         return postRepository.findById(id);
     }
 
+    @Override
     public PostDTO convertToPostDto(Post post) {
         PostDTO postDto = new PostDTO();
         postDto.setText(post.getText());
@@ -61,7 +62,6 @@ public class PostService implements IPostService {
 
         return postDto;
     }
-
 
     public void createPost(String text, Integer accountId, Optional<List<MultipartFile>> listOfFiles) throws AccountNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
@@ -89,6 +89,7 @@ public class PostService implements IPostService {
         }
     }
 
+    @Override
     public void addPhotosToPost(Integer postId, List<MultipartFile> files) {
         Optional<Post> optionalPost = postRepository.findById(postId);
         if (optionalPost.isPresent()) {
@@ -106,6 +107,7 @@ public class PostService implements IPostService {
         }
     }
 
+    @Override
     public void deletePhotosFromPost(Integer postId, List<Integer> idList) {
         Optional<Post> optionalPost = postRepository.findById(postId);
         if (optionalPost.isPresent()) {
@@ -117,17 +119,20 @@ public class PostService implements IPostService {
         }
     }
 
+    @Override
     public void saveText(Post post, String text) {
         post.setText(text);
         postRepository.saveAndFlush(post);
     }
 
+    @Override
     public Account getAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
         return accountDetails.account();
     }
 
+    @Override
     public void savePostPhoto(Post post, String profilePictureUrl) {
         PostPhoto postPhoto = new PostPhoto();
         postPhoto.setPhotoUrl(profilePictureUrl);
@@ -136,18 +141,22 @@ public class PostService implements IPostService {
         postPhotoRepository.saveAndFlush(postPhoto);
     }
 
+    @Override
     public void deleteById(Integer id) {
         postRepository.deleteById(id);
     }
 
+    @Override
     public Stream<Post> streamAllBy() {
         return postRepository.streamAllBy();
     }
 
+    @Override
     public PostPhotoDTO convertToPostPhotoDTO(PostPhoto postPhoto) {
         return this.modelMapper.map(postPhoto, PostPhotoDTO.class);
     }
 
+    @Override
     public PostPhoto convertToPostPhoto(PostPhotoDTO postPhotoDTO) {
         return this.modelMapper.map(postPhotoDTO, PostPhoto.class);
     }

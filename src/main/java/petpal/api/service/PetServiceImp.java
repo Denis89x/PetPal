@@ -73,10 +73,12 @@ public class PetServiceImp implements PetService {
         petRepository.saveAndFlush(pet);
     }
 
+    @Override
     public PetDTO convertToPetDto(Pet pet) {
         return this.modelMapper.map(pet, PetDTO.class);
     }
 
+    @Override
     public Stream<Pet> searchPets(String name, String breed, Integer age) {
         return petRepository.findAll((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

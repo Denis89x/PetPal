@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface PetService {
-/*    void createProfile(PetDTO petDTO, Integer accountId, MultipartFile file) throws AccountNotFoundException;*/
 
     void save(Pet pet);
 
@@ -18,4 +17,8 @@ public interface PetService {
     Optional<Pet> findById(Integer id);
 
     void delete(Integer id);
+
+    PetDTO convertToPetDto(Pet pet);
+
+    Stream<Pet> searchPets(String name, String breed, Integer age);
 }

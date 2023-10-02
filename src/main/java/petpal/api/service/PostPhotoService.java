@@ -18,18 +18,12 @@ public class PostPhotoService implements IPostPhotoService {
 
     PostPhotoRepository postPhotoRepository;
 
+    @Override
     public Optional<List<PostPhoto>> findAllByPost(Post post) {
         return postPhotoRepository.findAllByPost(post);
     }
 
-    public Optional<PostPhoto> findById(Integer id) {
-        return postPhotoRepository.findById(id);
-    }
-
-    public void deleteById(Integer id) {
-        postPhotoRepository.deleteById(id);
-    }
-
+    @Override
     public void deleteAll(List<PostPhoto> photos) {
         postPhotoRepository.deleteAll(photos);
     }
