@@ -36,13 +36,13 @@ public class PetController {
     PhotosServiceImp photosServiceImp;
 
     // CRUD
-    private static final String FETCH_ALL_PROFILE = "/pets";
     private static final String FETCH_PROFILE = "/pet/{pet_id}";
     private static final String CREATE_PROFILE = "/pet/create";
     private static final String EDIT_PROFILE = "/pet/edit/{pet_id}";
     private static final String DELETE_PROFILE = "/pet/delete/{pet_id}";
 
     private static final String UPLOAD_PICTURE = "/pet/upload-picture";
+    private static final String FETCH_WITH_PARAMETERS = "/pet/find";
 
     @Transactional(readOnly = true)
     @GetMapping(FETCH_PROFILE)
@@ -62,9 +62,17 @@ public class PetController {
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(FETCH_ALL_PROFILE)
-    public List<PetDTO> fetchPets() {
-        Stream<Pet> petStream = petServiceImp.streamAllBy();
+    @GetMapping(FETCH_WITH_PARAMETERS)
+    public List<PetDTO> fetchPets(
+            @RequestParam(value = "name", required = false) Optional<String> optionalName,
+            @RequestParam(value = "breed", required = false) Optional<String> optionalBreed,
+            @RequestParam(value = "age", required = false) Optional<Integer> optionalAge) {
+
+        Stream<Pet> petStream = petServiceImp.searchPets(
+                optionalName.orElse(null),
+                optionalBreed.orElse(null),
+                optionalAge.orElse(null)
+        );
 
         return petStream
                 .map(petServiceImp::convertToPetDto)

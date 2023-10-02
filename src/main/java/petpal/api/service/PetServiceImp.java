@@ -13,7 +13,9 @@ import petpal.store.model.Pet;
 import petpal.store.repository.AccountRepository;
 import petpal.store.repository.PetRepository;
 
+import javax.persistence.criteria.Predicate;
 import javax.security.auth.login.AccountNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -73,5 +75,21 @@ public class PetServiceImp implements PetService {
 
     public PetDTO convertToPetDto(Pet pet) {
         return this.modelMapper.map(pet, PetDTO.class);
+    }
+
+    public Stream<Pet> searchPets(String name, String breed, Integer age) {
+        return petRepository.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (name != null) {
+                predicates.add(criteriaBuilder.equal(root.get("name"), name));
+            }
+            if (breed != null) {
+                predicates.add(criteriaBuilder.equal(root.get("breed"), breed));
+            }
+            if (age != null) {
+                predicates.add(criteriaBuilder.equal(root.get("age"), age));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        }).stream();
     }
 }
