@@ -1,6 +1,8 @@
 package petpal.store.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +27,7 @@ public class Post {
     private Account account;
 
     @Column(name = "text")
+    @Size(min = 3, max = 100, message = "Post should be 3 - 100 symbols size")
     private String text;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)

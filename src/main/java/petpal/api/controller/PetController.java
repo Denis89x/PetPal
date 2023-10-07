@@ -50,7 +50,6 @@ public class PetController {
         if (optionalId.isPresent()) {
             int id = optionalId.get();
             Optional<Pet> optionalPet = petServiceImp.findById(id);
-            System.out.println("optionalPet: " + optionalPet);
             if (optionalPet.isPresent()) {
                 HttpHeaders headers = new HttpHeaders();
 
@@ -154,7 +153,7 @@ public class PetController {
             Optional<Pet> petOptional = petServiceImp.findById(petId);
             if (petOptional.isPresent()) {
                 Pet pet = petOptional.get();
-                photosServiceImp.save(pet, linkServiceImp.uploadProfilePicture(file));
+                photosServiceImp.save(pet, linkServiceImp.uploadPicture(file));
                 return ResponseEntity.ok("Image was successfully uploaded.");
             } else {
                 return ResponseEntity.badRequest().body("Incorrect pet_id.");

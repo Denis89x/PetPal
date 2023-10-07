@@ -7,6 +7,10 @@ import com.backblaze.b2.client.contentSources.B2FileContentSource;
 import com.backblaze.b2.client.exceptions.B2Exception;
 import com.backblaze.b2.client.structures.B2FileVersion;
 import com.backblaze.b2.client.structures.B2UploadFileRequest;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,12 +21,13 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LinkServiceImp implements LinkService {
 
     @Value("${bucket.id}")
-    private String bucketId;
+    String bucketId;
 
-    private final B2StorageService b2StorageService;
+    final B2StorageService b2StorageService;
 
     @Autowired
     public LinkServiceImp(B2StorageService b2StorageService) {
@@ -30,7 +35,7 @@ public class LinkServiceImp implements LinkService {
     }
 
     @Override
-    public String uploadProfilePicture(MultipartFile file) throws B2Exception {
+    public String uploadPicture(MultipartFile file) throws B2Exception {
         B2StorageClient client = b2StorageService.getClient();
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -49,7 +54,6 @@ public class LinkServiceImp implements LinkService {
 
             return "https://f005.backblazeb2.com/file/petpal/" + fileVersion.getFileName();
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

@@ -48,7 +48,7 @@ public class PetServiceImp implements PetService {
             Pet pet = new Pet();
             if (optionalMultipartFile.isPresent()) {
                 try {
-                    pet.setPhotoUrl(linkServiceImp.uploadProfilePicture(optionalMultipartFile.get()));
+                    pet.setPhotoUrl(linkServiceImp.uploadPicture(optionalMultipartFile.get()));
                 } catch (B2Exception e) {
                     throw new RuntimeException(e);
                 }

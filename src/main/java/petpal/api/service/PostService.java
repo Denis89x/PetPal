@@ -77,7 +77,7 @@ public class PostService implements IPostService {
                 if (lists.size() <= 5) {
                     for (MultipartFile file : lists) {
                         try {
-                            savePostPhoto(post, linkServiceImp.uploadProfilePicture(file));
+                            savePostPhoto(post, linkServiceImp.uploadPicture(file));
                         } catch (B2Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -96,7 +96,7 @@ public class PostService implements IPostService {
             for (MultipartFile file : files) {
                 PostPhotoDTO postPhotoDTO = new PostPhotoDTO();
                 try {
-                    postPhotoDTO.setPhotoUrl(linkServiceImp.uploadProfilePicture(file));
+                    postPhotoDTO.setPhotoUrl(linkServiceImp.uploadPicture(file));
                 } catch (B2Exception e) {
                     throw new RuntimeException(e);
                 }
