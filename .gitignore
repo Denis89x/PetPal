@@ -19,6 +19,7 @@ bin/
 
 **/application.properties
 **/What-i-did
+**/docker-compose.yml
 
 ### IntelliJ IDEA ###
 .idea

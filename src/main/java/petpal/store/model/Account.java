@@ -38,9 +38,11 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @Builder.Default
     List<Pet> pets = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @Builder.Default
     List<Post> posts = new ArrayList<>();
 }

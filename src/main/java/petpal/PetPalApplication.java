@@ -16,5 +16,4 @@ public class PetPalApplication {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-
 }
