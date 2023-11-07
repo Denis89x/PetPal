@@ -43,5 +43,4 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(errorMessages.toString());
     }
-
 }

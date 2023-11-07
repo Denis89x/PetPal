@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/pet")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class PetController {
@@ -36,13 +36,13 @@ public class PetController {
     PhotosServiceImp photosServiceImp;
 
     // CRUD
-    private static final String FETCH_PROFILE = "/pet/{pet_id}";
-    private static final String CREATE_PROFILE = "/pet/create";
-    private static final String EDIT_PROFILE = "/pet/edit/{pet_id}";
-    private static final String DELETE_PROFILE = "/pet/delete/{pet_id}";
+    private static final String FETCH_PROFILE = "/{pet_id}";
+    private static final String CREATE_PROFILE = "/create";
+    private static final String EDIT_PROFILE = "/edit/{pet_id}";
+    private static final String DELETE_PROFILE = "/delete/{pet_id}";
 
-    private static final String UPLOAD_PICTURE = "/pet/upload-picture";
-    private static final String FETCH_WITH_PARAMETERS = "/pet/find";
+    private static final String UPLOAD_PICTURE = "/upload-picture";
+    private static final String FETCH_WITH_PARAMETERS = "/find";
 
     @Transactional(readOnly = true)
     @GetMapping(FETCH_PROFILE)

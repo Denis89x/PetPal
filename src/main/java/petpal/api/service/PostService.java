@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import petpal.api.dto.PetDTO;
 import petpal.api.dto.PostDTO;
 import petpal.api.dto.FetchPostPhotoDTO;
 import petpal.api.dto.PostPhotoDTO;
@@ -72,18 +71,15 @@ public class PostService implements IPostService {
             post.setText(text);
             post.setAccount(account);
             postRepository.saveAndFlush(post);
-            if (listOfFiles.isPresent()) {
-                List<MultipartFile> lists = listOfFiles.get();
-                if (lists.size() <= 5) {
-                    for (MultipartFile file : lists) {
+            listOfFiles.ifPresent(files -> files.stream()
+                    .limit(5)
+                    .forEach(file -> {
                         try {
                             savePostPhoto(post, linkServiceImp.uploadPicture(file));
                         } catch (B2Exception e) {
                             throw new RuntimeException(e);
                         }
-                    }
-                }
-            }
+                    }));
         } else {
             throw new AccountNotFoundException("Account not found");
         }

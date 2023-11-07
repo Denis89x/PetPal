@@ -23,17 +23,17 @@ import java.util.stream.Stream;
 @RestController
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/post")
 public class PostController {
 
     PostService postService;
     PostPhotoService postPhotoService;
 
     private static final String FETCH_ALL_POST = "/posts";
-    private static final String FETCH_POST = "/post/{post_id}";
-    private static final String CREATE_POST = "/post/create";
-    private static final String EDIT_POST = "/post/edit/{post_id}";
-    private static final String DELETE_POST = "/post/delete/{post_id}";
+    private static final String FETCH_POST = "/{post_id}";
+    private static final String CREATE_POST = "/create";
+    private static final String EDIT_POST = "/edit/{post_id}";
+    private static final String DELETE_POST = "/delete/{post_id}";
 
     @Transactional(readOnly = true)
     @GetMapping(FETCH_POST)
