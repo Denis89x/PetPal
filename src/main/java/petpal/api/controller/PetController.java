@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/api/v1/pet")
+@RequestMapping("/api/v1/pets")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class PetController {
@@ -37,9 +37,8 @@ public class PetController {
 
     // CRUD
     private static final String FETCH_PROFILE = "/{pet_id}";
-    private static final String CREATE_PROFILE = "/create";
-    private static final String EDIT_PROFILE = "/edit/{pet_id}";
-    private static final String DELETE_PROFILE = "/delete/{pet_id}";
+    private static final String EDIT_PROFILE = "/{pet_id}";
+    private static final String DELETE_PROFILE = "/{pet_id}";
 
     private static final String UPLOAD_PICTURE = "/upload-picture";
     private static final String FETCH_WITH_PARAMETERS = "/find";
@@ -78,7 +77,7 @@ public class PetController {
                 .toList();
     }
 
-    @PostMapping(CREATE_PROFILE)
+    @PostMapping()
     public ResponseEntity<PetDTO> createProfile(
             @RequestBody @Valid PetDTO petDTO,
             @RequestParam(value = "file", required = false) Optional<MultipartFile> file) throws AccountNotFoundException {

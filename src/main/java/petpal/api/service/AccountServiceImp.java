@@ -21,6 +21,7 @@ public class AccountServiceImp implements AccountService {
     AccountRepository accountRepository;
     PasswordEncoder passwordEncoder;
 
+    @Override
     public void changeAccountPassword(String currentPassword, String newPassword) {
         if (passwordEncoder.matches(currentPassword, getPrincipal().getPassword())) {
             Account account = getAccountFromPrincipleUsername();
@@ -29,6 +30,7 @@ public class AccountServiceImp implements AccountService {
         }
     }
 
+    @Override
     public void changeAccountUsername(String username) {
         Account account = getAccountFromPrincipleUsername();
         account.setUsername(username);
@@ -37,6 +39,7 @@ public class AccountServiceImp implements AccountService {
         updateAuthenticationUsername(username);
     }
 
+    @Override
     public void updateAuthenticationUsername(String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -45,12 +48,14 @@ public class AccountServiceImp implements AccountService {
         SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
     }
 
+    @Override
     public AccountDetails getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         return (AccountDetails) authentication.getPrincipal();
     }
 
+    @Override
     public Account getAccountFromPrincipleUsername() {
         return accountRepository.findByUsername(getPrincipal().getUsername())
                 .orElseThrow(() -> new AccountNotFoundException("Account was not founded!"));
