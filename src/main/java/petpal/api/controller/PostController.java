@@ -23,17 +23,16 @@ import java.util.stream.Stream;
 @RestController
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-@RequestMapping("/api/v1/post")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     PostService postService;
     PostPhotoService postPhotoService;
 
-    private static final String FETCH_ALL_POST = "/posts";
     private static final String FETCH_POST = "/{post_id}";
     private static final String CREATE_POST = "/create";
-    private static final String EDIT_POST = "/edit/{post_id}";
-    private static final String DELETE_POST = "/delete/{post_id}";
+    private static final String EDIT_POST = "/{post_id}";
+    private static final String DELETE_POST = "/{post_id}";
 
     @Transactional(readOnly = true)
     @GetMapping(FETCH_POST)
@@ -52,7 +51,7 @@ public class PostController {
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(FETCH_ALL_POST)
+    @GetMapping()
     public List<PostDTO> fetchAllPosts() {
         Stream<Post> postStream = postService.streamAllBy();
 

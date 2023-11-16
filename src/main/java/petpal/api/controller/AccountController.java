@@ -21,10 +21,9 @@ public class AccountController {
 
     AccountServiceImp accountServiceImp;
 
-    private static final String SHOW_ACCOUNT_INFO = "/show";
     private static final String CHANGE_ACCOUNT_INFO = "/change";
 
-    @GetMapping(SHOW_ACCOUNT_INFO)
+    @GetMapping()
     public String showAccountInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
