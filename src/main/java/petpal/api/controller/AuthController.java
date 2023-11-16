@@ -1,7 +1,9 @@
 package petpal.api.controller;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,26 +21,20 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@AllArgsConstructor
 public class AuthController {
 
-    private final JWTUtil jwtUtil;
-    private final ModelMapper modelMapper;
-    private final AccountValidator accountValidator;
-    private final RegistrationService registrationService;
-    private final AuthenticationManager authenticationManager;
-
-    @Autowired
-    public AuthController(JWTUtil jwtUtil, ModelMapper modelMapper, AccountValidator accountValidator, RegistrationService registrationService, AuthenticationManager authenticationManager) {
-        this.jwtUtil = jwtUtil;
-        this.modelMapper = modelMapper;
-        this.accountValidator = accountValidator;
-        this.registrationService = registrationService;
-        this.authenticationManager = authenticationManager;
-    }
+    JWTUtil jwtUtil;
+    ModelMapper modelMapper;
+    AccountValidator accountValidator;
+    RegistrationService registrationService;
+    AuthenticationManager authenticationManager;
 
     @PostMapping("/registration")
-    public Map<String, String> performRegistration(@RequestBody @Valid AccountDTO accountDTO,
-                                      BindingResult result) {
+    public Map<String, String> performRegistration(
+            @RequestBody @Valid AccountDTO accountDTO,
+            BindingResult result) {
         Account account = convertToAccount(accountDTO);
 
         accountValidator.validate(account, result);

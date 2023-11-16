@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 @RestController
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/v1/post")
 public class PostController {
 
     PostService postService;

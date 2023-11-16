@@ -1,5 +1,8 @@
 package petpal.util;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -9,14 +12,11 @@ import petpal.api.service.AccountDetailsService;
 import petpal.store.model.Account;
 
 @Component
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class AccountValidator implements Validator {
 
-    private final AccountDetailsService accountDetailsService;
-
-    @Autowired
-    public AccountValidator(AccountDetailsService accountDetailsService) {
-        this.accountDetailsService = accountDetailsService;
-    }
+    AccountDetailsService accountDetailsService;
 
     @Override
     public boolean supports(Class<?> aClass) {
