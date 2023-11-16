@@ -34,7 +34,9 @@ public class PostService implements IPostService {
     AccountRepository accountRepository;
     LinkServiceImp linkServiceImp;
     ModelMapper modelMapper;
-    private final PostPhotoRepository postPhotoRepository;
+    PostPhotoRepository postPhotoRepository;
+
+    private final static int MAX_PICTURE_QUANTITY = 5;
 
     @Override
     public Optional<Post> findById(Integer id) {
@@ -72,7 +74,7 @@ public class PostService implements IPostService {
             post.setAccount(account);
             postRepository.saveAndFlush(post);
             listOfFiles.ifPresent(files -> files.stream()
-                    .limit(5)
+                    .limit(MAX_PICTURE_QUANTITY)
                     .forEach(file -> {
                         try {
                             savePostPhoto(post, linkServiceImp.uploadPicture(file));
